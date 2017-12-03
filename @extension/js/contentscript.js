@@ -13,12 +13,11 @@ div.appendChild(elements);
 //alert(div.innerHTML);
 
 chrome.storage.local.get(['arr'], function(obj) {
-        var array = obj.arr?obj.arr:[];
-        array.push(div.innerHTML);
-        chrome.storage.local.set({
-          'arr': array
-        });
+  var array = obj.arr?obj.arr:[];
+  array.push(div.innerHTML);
+  chrome.storage.local.set({
+    'arr': array
+  });
 });
-
 
 //chrome.storage.sync.set({'html': div.innerHTML});
