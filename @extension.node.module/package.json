@@ -1,0 +1,36 @@
+{
+  "name": "annotate",
+  "version": "1.0.0",
+  "description": "Chrome extension to select html content and annotate with unique id in compilations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basavarajg/chromeextension.git"
+  },
+  "author": "zktewfm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/basavarajg/chromeextension/issues"
+  },
+  "homepage": "https://github.com/basavarajg/chromeextension#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chrome-promise": "^2.1.1",
+    "express": "^4.16.2",
+    "material-components-web": "^0.26.0",
+    "promise": "^8.0.1",
+    "util": "^0.10.3"
+  }
+}

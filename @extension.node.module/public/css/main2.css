@@ -1,0 +1,155 @@
+.dockbar-user-notifications .user-notifications-count, .notifications-portlet .user-notifications-count {
+  background-color: #0066B3;
+  border: 1px solid #0066B3;
+  padding: 2px 6px; }
+  .dockbar-user-notifications .user-notifications-count.alert, .notifications-portlet .user-notifications-count.alert {
+    background-color: #FAA732;
+    border: 1px solid #FAA732;
+    color: #FFF; }
+.dockbar-user-notifications .dropdown-menu, .notifications-portlet .dropdown-menu {
+  width: 350px; }
+.dockbar-user-notifications .user-notifications-list, .notifications-portlet .user-notifications-list {
+  list-style: none;
+  margin: 0; }
+  .dockbar-user-notifications .user-notifications-list .message, .notifications-portlet .user-notifications-list .message {
+    text-align: center; }
+    .dockbar-user-notifications .user-notifications-list .message.top, .notifications-portlet .user-notifications-list .message.top {
+      border-bottom: 1px solid #FFF; }
+    .dockbar-user-notifications .user-notifications-list .message.bottom, .notifications-portlet .user-notifications-list .message.bottom {
+      border-top: 1px solid #FFF; }
+    .dockbar-user-notifications .user-notifications-list .message .left-nav, .notifications-portlet .user-notifications-list .message .left-nav {
+      float: left;
+      padding: 0 10px; }
+    .dockbar-user-notifications .user-notifications-list .message .right-nav, .notifications-portlet .user-notifications-list .message .right-nav {
+      float: right;
+      padding: 0 10px; }
+    .dockbar-user-notifications .user-notifications-list .message a:hover, .notifications-portlet .user-notifications-list .message a:hover {
+      text-decoration: none; }
+    .dockbar-user-notifications .user-notifications-list .message .disabled a, .notifications-portlet .user-notifications-list .message .disabled a {
+      color: #FFF;
+      cursor: default; }
+  .dockbar-user-notifications .user-notifications-list .user-notification a, .notifications-portlet .user-notifications-list .user-notification a {
+    clear: both;
+    display: block;
+    font-weight: normal;
+    padding: 5px;
+    white-space: normal; }
+  .dockbar-user-notifications .user-notifications-list .user-notification a:hover, .notifications-portlet .user-notifications-list .user-notification a:hover {
+    color: #FFF;
+    text-decoration: none; }
+  .dockbar-user-notifications .user-notifications-list .user-notification .icon-remove-circle, .notifications-portlet .user-notifications-list .user-notification .icon-remove-circle {
+    left: 330px;
+    position: relative;
+    top: 20px; }
+  .dockbar-user-notifications .user-notifications-list .user-notification .sender, .notifications-portlet .user-notifications-list .user-notification .sender {
+    float: left;
+    position: relative; }
+    .dockbar-user-notifications .user-notifications-list .user-notification .sender .user-thumbnail img, .notifications-portlet .user-notifications-list .user-notification .sender .user-thumbnail img {
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      -o-border-radius: 50%;
+      border-radius: 50%;
+      -webkit-box-shadow: 0 0 0 2px #5594e0;
+      -moz-box-shadow: 0 0 0 2px #5594e0;
+      box-shadow: 0 0 0 2px #5594e0;
+      margin: 5px 10px 0 0;
+      width: 30px; }
+    .dockbar-user-notifications .user-notifications-list .user-notification .sender .portlet-icon, .notifications-portlet .user-notifications-list .user-notification .sender .portlet-icon {
+      bottom: 0;
+      left: 0;
+      position: absolute; }
+  .dockbar-user-notifications .user-notifications-list .user-notification .read, .notifications-portlet .user-notifications-list .user-notification .read {
+    float: right;
+    font-size: 11px; }
+  .dockbar-user-notifications .user-notifications-list .user-notification .timestamp, .notifications-portlet .user-notifications-list .user-notification .timestamp {
+    display: inline;
+    font-size: 11px; }
+  .dockbar-user-notifications .user-notifications-list .user-notification .content, .notifications-portlet .user-notifications-list .user-notification .content {
+    margin-left: 40px; }
+
+.notifications-portlet .user-notifications-sidebar {
+  float: left;
+  padding: 0 10px 0 0;
+  width: 18%; }
+.notifications-portlet .nav {
+  margin-bottom: 10px; }
+  .notifications-portlet .nav a {
+    color: #333333;
+    display: block;
+    padding: 5px 10px; }
+    .notifications-portlet .nav a .title {
+      float: left; }
+    .notifications-portlet .nav a .count {
+      float: right; }
+  .notifications-portlet .nav a:hover {
+    background-color: #0A85E4;
+    color: #FFF;
+    text-decoration: none; }
+  .notifications-portlet .nav a.selected {
+    background-color: #0A85E4;
+    color: #FFF; }
+.notifications-portlet .user-notifications-list-container {
+  border: 1px solid #D5D5D5;
+  float: left;
+  width: 80%; }
+  .notifications-portlet .user-notifications-list-container .loading-mask {
+    min-height: 30px; }
+.notifications-portlet .user-notifications-list .user-notification a {
+  border-bottom: 1px solid #D5D5D5;
+  padding: 15px; }
+.notifications-portlet .user-notifications-list .user-notification a:hover {
+  background-color: #0A85E4;
+  color: #FFF;
+  text-decoration: none; }
+.notifications-portlet .user-notifications-list .user-notification.unread {
+  background-color: #FAFAFA; }
+.notifications-portlet .user-notifications-list .message.top {
+  border-bottom: 1px solid #D5D5D5; }
+.notifications-portlet .manage-notifications {
+  padding: 5px; }
+  .notifications-portlet .manage-notifications .title {
+    margin-bottom: 10px; }
+    .notifications-portlet .manage-notifications .title .notification-delivery {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px; }
+  .notifications-portlet .manage-notifications .notification-deliveries caption {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px 0;
+    text-align: left; }
+
+/* ---------- Extras ---------- */
+.dockbar-user-notifications .user-notifications-count {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
+
+.notifications-portlet .nav a:hover {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
+.notifications-portlet .nav a.selected {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
+.notifications-portlet .user-notifications-list-container {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
+
+.aui li.user-notification {
+  line-height: 20px; }
+
+.aui .dockbar .nav li.dropdown.dockbar-user-notifications .dropdown-menu {
+  left: auto;
+  right: 0; }
