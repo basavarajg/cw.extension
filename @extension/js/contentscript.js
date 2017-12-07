@@ -20,4 +20,8 @@ chrome.storage.local.get(['arr'], function(obj) {
   });
 });
 
+chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+  alert(response.farewell);
+});
+
 //chrome.storage.sync.set({'html': div.innerHTML});

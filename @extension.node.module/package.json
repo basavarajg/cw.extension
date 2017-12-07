@@ -30,6 +30,7 @@
     "chrome-promise": "^2.1.1",
     "express": "^4.16.2",
     "material-components-web": "^0.26.0",
+    "mysql": "^2.15.0",
     "promise": "^8.0.1",
     "util": "^0.10.3"
   }

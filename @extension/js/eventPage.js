@@ -14,6 +14,14 @@ chrome.contextMenus.onClicked.addListener(function(selectedData){
   chrome.tabs.executeScript({
     file: "js/contentscript.js"
   }, function() {
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+      alert(sender.tab ?
+                  "from a content script:" + sender.tab.url :
+                  "from the extension");
+      if (request.greeting == "hello")
+        sendResponse({farewell: "goodbye"});
+    });
+
     chrome.storage.local.get(['arr'], function(obj) {
       var htmlData = obj.arr?obj.arr:[];
       $.post("http://localhost:3000/main",

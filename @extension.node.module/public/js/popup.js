@@ -34,10 +34,11 @@
       //let array = JSON.parse("[" + result + "]");
       let array = JSON.parse(result);
       for(let i=0; i< array.length; i++) {
+        console.log(array[i]);
         if(undefined != array[i]
           && null != array[i]
           && '' != array[i])
-        tableData.push([i+1, array[i], 'zktewfm', Date()]);
+          tableData.push([array[i].content_id, array[i].content, array[i].user, array[i].cre_time]);
       }
       $('#dataTable').DataTable({
         data: tableData,
