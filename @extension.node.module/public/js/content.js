@@ -14,7 +14,14 @@
         if(undefined != array[i]
           && null != array[i]
           && '' != array[i])
-          tableData.push([array[i].content_id, array[i].content, array[i].user, array[i].cre_time]);
+          tableData.push([
+            '<a href="#"><img src="img/ic_add_box_black.png" height="30" width="30"></img></a>',
+            array[i].content_id,
+            array[i].content,
+            array[i].user,
+            array[i].cre_time,
+            `<a href="javascript:;" onclick="deleteId('${array[i].content_id}')"><img src="img/ic_delete_black.png" height="30" width="30"></img></a>`
+          ]);
           //$('#dataTable > tbody:last-child').append(`<tr><td>${array[i].content_id}</td><td>${array[i].content}</td><td>${array[i].user}</td><td>${array[i].cre_time}</td></tr>`);
       }
       $('#dataTable').DataTable({
@@ -42,3 +49,12 @@
     }
   });*/
 })();
+
+function deleteId(id) {
+  $.post("http://localhost:3000/delete",
+  {
+    id: id
+  },
+  function(data, status) {
+  });
+}
