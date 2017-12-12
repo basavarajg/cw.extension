@@ -18,10 +18,7 @@
           //$('#dataTable > tbody:last-child').append(`<tr><td>${array[i].content_id}</td><td>${array[i].content}</td><td>${array[i].user}</td><td>${array[i].cre_time}</td></tr>`);
       }
       $('#dataTable').DataTable({
-        sScrollY: 650,
-        sScrollX: 100,
-        sScrollXinner: 500,
-        bScrollCollapse: true,
+        sScrollY: 590,
         data: tableData
       });
     }
