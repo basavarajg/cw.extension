@@ -14,15 +14,7 @@ chrome.contextMenus.onClicked.addListener(function(selectedData){
   chrome.tabs.executeScript({
     file: "js/contentscript.js"
   }, function() {
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-      alert(sender.tab ?
-                  "from a content script:" + sender.tab.url :
-                  "from the extension");
-      if (request.greeting == "hello")
-        sendResponse({farewell: "goodbye"});
-    });
-
-    chrome.storage.local.get(['arr'], function(obj) {
+    /*chrome.storage.local.get(['arr'], function(obj) {
       var htmlData = obj.arr?obj.arr:[];
       $.post("http://localhost:3000/main",
       {
@@ -46,6 +38,25 @@ chrome.contextMenus.onClicked.addListener(function(selectedData){
           });
         }
       });
-    });
+    });*/
   });
+});
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if(request.html) {
+    $.post("http://localhost:3000/main",
+    {
+      html: request.html
+    },
+    function(data, status) {
+      chrome.tabs.query({'url': data}, function(tabs) {
+        if ( tabs.length > 0 ) {
+          chrome.tabs.update(tabs[0].id,{'active':true});
+        } else {
+          chrome.tabs.create({'url':data});
+        }
+      });
+    });
+  }
+  sendResponse({status: "200"});
 });

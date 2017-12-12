@@ -5,7 +5,7 @@
     <title>demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/img/logo_components_color_2x_web_48dp.png">
-    <link rel="stylesheet" href="css/material-components-web.min.css">
+    <link rel="stylesheet" href="css/material-components-web.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/yui3-1.css">
     <link rel="stylesheet" href="css/yui3-2.css">
 
-    <script src="js/material-components-web.min.js"></script>
+    <script src="js/material-components-web.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
     <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
@@ -28,54 +28,23 @@
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle">menu</button>
-          <span class="mdc-toolbar__title" id="username"></span>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-center">
+          <div id="searchBox" class="mdc-text-field mdc-text-field--box">
+            <input type="text" class="mdc-text-field__input" id="demo-text-field-box">
+            <label for="demo-text-field-box" class="mdc-text-field__label">
+              <a class="material-icons" aria-label="Search" alt="Search">search</a>
+            </label>
+          </div>
         </section>
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-          <!--<a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>-->
+        <!--<section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
           <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
           <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
-        </section>
+        </section>-->
       </div>
     </header>
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-        <header class="mdc-temporary-drawer__header">
-          <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
-            Header here
-          </div>
-        </header>
-        <nav class="mdc-temporary-drawer__content mdc-list-group">
-          <div class="mdc-list">
-            <!--<a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
-            </a>-->
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>
-            </a>
-          </div>
-
-          <hr class="mdc-list-divider">
-
-          <div class="mdc-list">
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>
-            </a>
-            <!--<a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
-            </a>-->
-          </div>
-        </nav>
-      </nav>
-    </aside>
     <main class="mdc-toolbar-fixed-adjust">
+      <br>
+      </br>
       <table id="dataTable" width="100%">
     </table>
     </main>

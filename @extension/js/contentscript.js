@@ -12,16 +12,16 @@ var div = document.createElement('div');
 div.appendChild(elements);
 //alert(div.innerHTML);
 
-chrome.storage.local.get(['arr'], function(obj) {
+/*chrome.storage.local.get(['arr'], function(obj) {
   var array = obj.arr?obj.arr:[];
   array.push(div.innerHTML);
   chrome.storage.local.set({
     'arr': array
   });
-});
-
-chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
-  alert(response.farewell);
-});
-
+});*/
+if(div.innerHTML) {
+  chrome.runtime.sendMessage({html: div.innerHTML}, function(response) {
+    console.log(response.status);
+  });
+}
 //chrome.storage.sync.set({'html': div.innerHTML});
