@@ -1,9 +1,6 @@
-//chrome.storage.sync.clear()
+var table;
 (function() {
-  'use strict';
-
   var tableData = [];
-  //var table = $('#dataTable');
 
   $.ajax({
     url: "/getHtmlData",
@@ -15,30 +12,20 @@
           && null != array[i]
           && '' != array[i])
           tableData.push([
-            '<a href="#"><img src="img/ic_add_box_black.png" height="30" width="30"></img></a>',
+            `<a href="#"><img src="img/ic_add_box_black.png" height="30" width="30"></img></a>`,
             array[i].content_id,
             array[i].content,
             array[i].user,
-            array[i].cre_time,
-            `<a href="javascript:;" onclick="deleteId('${array[i].content_id}')"><img src="img/ic_delete_black.png" height="30" width="30"></img></a>`
+            formatDate(new Date(array[i].cre_time)),
+            `<a href="javascript:;" onclick="deleteId(this, '${array[i].content_id}')"><img src="img/ic_delete_black.png" height="30" width="30"></img></a>`,
+            `<a href="javascript:;" onclick="playAudio(this)"><img src="img/ic_record_voice_over_black.png" height="30" width="30"></img></a>`
           ]);
-          //$('#dataTable > tbody:last-child').append(`<tr><td>${array[i].content_id}</td><td>${array[i].content}</td><td>${array[i].user}</td><td>${array[i].cre_time}</td></tr>`);
       }
-      $('#dataTable').DataTable({
+      table = $('#dataTable').DataTable({
         sScrollY: 590,
         data: tableData
       });
     }
-  });
-
-  var header = $("#header");
-  header.on("scroll", function(e) {
-    if (this.scrollTop > 100) {
-      header.addClass("fix-search");
-    } else {
-      header.removeClass("fix-search");
-    }
-
   });
 
   //ajax call to get windows logged in user name
@@ -48,13 +35,39 @@
       $("#username").html('Hello, ' + result.toUpperCase());
     }
   });*/
+
 })();
 
-function deleteId(id) {
-  $.post("http://localhost:3000/delete",
+function playAudio(element) {
+  let tr= (element).closest('tr');
+  let childNodes = tr.childNodes;
+  //console.log(childNodes[2].innerText);
+  responsiveVoice.speak(childNodes[2].innerText,'US English Female');
+}
+
+function openMailBox() {
+  $('#dialogDiv').dialog({
+    title: "Compose Mail",
+    show: { effect: "blind", duration: 800 },
+    modal: true,
+    width: 1000,
+    height: 600,
+    dialogClass: 'dialogHeader'
+  });
+}
+
+function deleteId(element, id) {
+  $.post("/delete",
   {
     id: id
   },
   function(data, status) {
+    if('success' == status)
+      (element).closest('tr').remove();
   });
+}
+
+function formatDate(date) {
+  var utc = date.toUTCString() // 'ddd, DD MMM YYYY HH:mm:ss GMT'
+  return utc.slice(8, 12) + utc.slice(5, 8) + utc.slice(12, 22)
 }

@@ -1,7 +1,6 @@
 
 body {
   margin: 0;
-  overflow: hidden;
 }
 
 .top-header {
@@ -11,28 +10,48 @@ body {
   width: 100%;
   height: 60px;
   overflow: hidden;
-  .fix-search & {
-    background: #007bff;
-  }
+  display: block;
+  z-index: 10;
 }
 
 .search {
   position: absolute;
   top: 15px;
-  left: 400px;
+  left: 180px;
   overflow: hidden;
-  .fix-search & {
-    position: fixed;
-    overflow: hidden;
-    top: 10px;
-    input {
-      width: 100%;
-    }
-  }
+  display: block;
+  z-index: 10;
+}
+
+input[type=search] {
+    width: 180px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 15px;
+    background-color: white;
+    background-image: url('http://localhost:3000/img/ic_search_black.png');
+    background-position: 2px 4px;
+    background-size: 25px;
+    background-repeat: no-repeat;
+    padding: 5px 0px 3px 30px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=search]:focus {
+    width: 600px;
 }
 
 main {
   padding: 80px;
   display: flex;
   justify-content: space-between;
+}
+
+.dialogHeader .ui-widget-header {
+  background: #007bff;
+  border: 1px solid #dddddd;
+  color: #000;
+  font-weight: bold;
 }
