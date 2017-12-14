@@ -207,8 +207,8 @@ input.ui-button.ui-button-icon-only {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-top: -8px;
-	margin-left: -8px;
+	margin-top: -10px;
+	margin-left: -10px;
 }
 
 .ui-button.ui-icon-notext .ui-icon {
@@ -1060,8 +1060,8 @@ a.ui-button:active,
 
 /* states and images */
 .ui-icon {
-	width: 16px;
-	height: 16px;
+	width: 20px;
+	height: 20px;
 }
 .ui-icon,
 .ui-widget-content .ui-icon {

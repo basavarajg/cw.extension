@@ -12,7 +12,7 @@ var table;
           && null != array[i]
           && '' != array[i])
           tableData.push([
-            `<a href="#"><img src="img/ic_add_box_black.png" height="30" width="30"></img></a>`,
+            `<a href="javascript:;" onclick="addToEmailBody(this)"><img src="img/ic_add_box_black.png" height="30" width="30"></img></a>`,
             array[i].content_id,
             array[i].content,
             array[i].user,
@@ -45,25 +45,82 @@ function playAudio(element) {
   responsiveVoice.speak(childNodes[2].innerText,'US English Female');
 }
 
+function sendEmail() {
+  let emailTo = $('#emailTo').val();
+  let subject = $('#emailSub').val();
+  let message = $('.note-editable').html();
+  $.post("/sendEmail",
+  {
+    emailTo: emailTo,
+    emailFrom: 'codeweek@baml-test.com',
+    subject: subject,
+    body: message
+  },
+  function(data, status) {
+    console.log(status);
+    $('#mailbox').dialog("close");
+  });
+}
+
+function addToEmailBody(element) {
+  let tr= (element).closest('tr');
+  let childNodes = tr.childNodes;
+  let content = childNodes[2].innerHTML;
+  let  body = $('.note-editable').html();
+  body = body.concat('<br>');
+  body = body.concat(content);
+   $('.note-editable').html(body);
+}
+
 function openMailBox() {
-  $('#dialogDiv').dialog({
+  $('#mailbox').dialog({
     title: "Compose Mail",
-    show: { effect: "blind", duration: 800 },
+    show: { effect: "fold", duration: 800 },
+    hide: { effect: "fold", duration: 800 },
     modal: true,
-    width: 1000,
-    height: 600,
-    dialogClass: 'dialogHeader'
+    width: 750,
+    height: 700,
+    dialogClass: 'dialogHeader',
+    create: function(event, ui) {
+      var widget = $(this).dialog("widget");
+      $(".ui-dialog-titlebar-close span", widget)
+      .removeClass("ui-icon-closethick").addClass("dialog-close-icon");
+    }
   });
 }
 
 function deleteId(element, id) {
-  $.post("/delete",
-  {
-    id: id
-  },
-  function(data, status) {
-    if('success' == status)
-      (element).closest('tr').remove();
+  $('#deleteWarning').dialog({
+    title: "Delete?",
+    show: { effect: "clip", duration: 800 },
+    hide: { effect: "clip", duration: 800 },
+    modal: true,
+    width: 450,
+    height: 100,
+    dialogClass: 'dialogHeader',
+    buttons: {
+      "Confirm": function() {
+        $.post("/delete",
+        {
+          id: id
+        },
+        function(data, status) {
+          if('success' == status)
+            (element).closest('tr').remove();
+        });
+        $(this).dialog("close");
+      },
+      "Cancel": function() {
+        $(this).dialog("close");
+      }
+    },
+    create: function(event, ui) {
+      var widget = $(this).dialog("widget");
+      $(".ui-dialog-titlebar-close span", widget)
+      .removeClass("ui-icon-closethick").addClass("dialog-close-icon");
+      $(".ui-dialog-buttonpane button", widget)
+      .removeClass("ui-button").addClass("btn").addClass("btn-primary");
+    },
   });
 }
 

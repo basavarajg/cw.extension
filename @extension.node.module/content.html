@@ -23,16 +23,20 @@
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
   	<script type="text/javascript" language="javascript" src="js/dataTables.bootstrap4.js"></script>
     <script type="text/javascript" language="javascript" src="https://code.responsivevoice.org/responsivevoice.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.js"></script>
+
     <script type="text/javascript" src="js/content.js"></script>
 
   </head>
   <body>
     <header class="top-header" id="header">
       <a href="http://localhost:3000/">
-        <img src="img/ic_home_black.png" height="30" width="30" hspace="20" vspace="15"></img>
+        <img src="img/ic_home_white.png" height="30" width="30" hspace="20" vspace="15"></img>
       </a>
       <a href="javscript:;" onclick="openMailBox()">
-        <img src="img/ic_email_black.png" height="30" width="30" hspace="21" vspace="15"></img>
+        <img src="img/ic_email_white.png" height="30" width="30" hspace="21" vspace="15"></img>
       </a>
       <div class="search">
         <input id="wildSearch" type="search"></input>
@@ -44,22 +48,29 @@
             <thead>
               <tr>
                 <th width="6%">Add</th>
-                <th width="12%">ID</th>
-                <th width="40%">Content</th>
+                <th width="10%">ID</th>
+                <th width="45%">Content</th>
                 <th width="12%">Created By</th>
-                <th width="12%">Created Time</th>
+                <th width="15%">Created Time</th>
                 <th width="6%">Delete</th>
                 <th width="6%">Voice</th>
               </tr>
             </thead>
           </table>
         </div>
-        <div id="mailbox" style="display:none">
-          <input type="text" id="emailTo" placeholder="To" />
-          <input type="text" id="emailSub" placeholder="Subject">
-          <textarea id="emailBody" rows="25" cols="80"></textarea>
+        <div id="mailbox" class="ui-field-contain" style="display:none">
+          <a href="javscript:;" onclick="sendEmail()">
+            <button type="submit" class="btn btn-primary">Send<img src="img/ic_send_white.png" height="18" width="18" hspace="5" vspace="2"></img></button>
+          </a>
+          <br /><br />
+          <input type="text" class="form-control" id="emailTo" placeholder="To" />
+          <br />
+          <input type="text" class="form-control" id="emailSub" placeholder="Subject">
+          <br />
+          <div id="emailBody"></div>
         </div>
         <div id="dialogDiv" style="display:none"></div>
+        <div id="deleteWarning" style="display:none"></div>
     </main>
   </body>
   <script>
@@ -83,13 +94,24 @@
           div.dialog({
             title: "Content Details - ID#" + ui.item.value,
             show: { effect: "blind", duration: 800 },
+            hide: { effect: "blind", duration: 800 },
             modal: true,
             width: 800,
             height: 400,
-            dialogClass: 'dialogHeader'
+            dialogClass: 'dialogHeader',
+            create: function(event, ui) {
+              var widget = $(this).dialog("widget");
+              $(".ui-dialog-titlebar-close span", widget)
+              .removeClass("ui-icon-closethick").addClass("dialog-close-icon");
+            }
           });
         }
       });
+    });
+
+    $('#emailBody').summernote({
+      tabsize: 2,
+      height: 400
     });
 </script>
 </html>
