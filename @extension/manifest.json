@@ -17,7 +17,7 @@
   },
 
   "background": {
-    "scripts": ["js/jquery-3.2.1.min.js","js/chrome-promise.js","js/eventPage.js"],
+    "scripts": ["js/jquery-3.2.1.min.js","js/eventPage.js"],
     "persistent": false
   },
 

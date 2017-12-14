@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     function(data, status) {
       chrome.tabs.query({'url': data}, function(tabs) {
         if ( tabs.length > 0 ) {
-          chrome.tabs.update(tabs[0].id,{'active':true});
+          chrome.tabs.update(tabs[0].id,{'active':true, url: data});
         } else {
           chrome.tabs.create({'url':data});
         }

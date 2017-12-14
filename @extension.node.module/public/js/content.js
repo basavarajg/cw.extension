@@ -23,8 +23,10 @@ var table;
       }
       table = $('#dataTable').DataTable({
         sScrollY: 590,
+        fixedColumns: true,
         data: tableData
       });
+      $('#archiveTable').hide();
     }
   });
 
@@ -37,6 +39,41 @@ var table;
   });*/
 
 })();
+
+function getArchiveEmails() {
+  var archiveData = [];
+
+  table.destroy();
+
+  $('#dataTable').hide();
+  $('#archiveTable').show();
+
+  $.ajax({
+    url: "/getArchiveEmails",
+    success: function(result){
+      //let array = JSON.parse("[" + result + "]");
+      let array = JSON.parse(result);
+      for(let i=0; i< array.length; i++) {
+        if(undefined != array[i]
+          && null != array[i]
+          && '' != array[i])
+          archiveData.push([
+            array[i].id,
+            array[i].email_subject,
+            array[i].email_from,
+            array[i].email_to,
+            formatDate(new Date(array[i].cre_time)),
+            array[i].email_message
+          ]);
+      }
+      table = $('#archiveTable').DataTable({
+        sScrollY: 590,
+        fixedColumns: true,
+        data: archiveData
+      });
+    }
+  });
+}
 
 function playAudio(element) {
   let tr= (element).closest('tr');
