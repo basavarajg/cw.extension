@@ -66,9 +66,9 @@
                 <th width="10%">ID</th>
                 <th width="10%">Subject</th>
                 <th width="10%">From</th>
-                <th width="10%">To</th>
+                <!--<th width="10%">To</th>-->
                 <th width="10%">Sent Time</th>
-                <th width="50%">Message</th>
+                <!--<th width="50%">Message</th>-->
               </tr>
             </thead>
           </table>
@@ -84,7 +84,21 @@
           <br />
           <div id="emailBody"></div>
         </div>
+
+        <div id="archiveMailbox" class="ui-field-contain" style="display:none">
+          <a href="javscript:;" onclick="forwardEmail()">
+            <button type="submit" class="btn btn-primary">Forward<img src="img/ic_forward_white.png" height="18" width="18" hspace="5" vspace="2"></img></button>
+          </a>
+          <br /><br />
+          <input type="text" disabled="disabled" class="form-control" id="archiveEmailTo" placeholder="To" />
+          <br />
+          <input type="text" disabled="disabled" class="form-control" id="archiveEmailSub" placeholder="Subject">
+          <br />
+          <div id="archiveEmailBody"></div>
+        </div>
+
         <div id="dialogDiv" style="display:none"></div>
+
         <div id="deleteWarning" style="display:none"></div>
     </main>
   </body>

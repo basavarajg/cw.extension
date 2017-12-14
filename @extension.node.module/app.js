@@ -109,7 +109,7 @@ app.route('/content')
   app.get('/getArchiveEmails', function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
     var database = new Database();
-    const query = 'select * from email_audit order by id desc';
+    const query = 'select id, email_subject, email_from, cre_time from email_audit order by id desc';
     var args = [];
     database.query(query, args).then( rows => {
       res.write(JSON.stringify(rows));
@@ -122,61 +122,78 @@ app.route('/content')
     //res.end();
   });
 
-app.get('/getUserName', function (req, res) {
-  let userName = process.env['USERPROFILE'].split(path.sep)[2];
-  //let loginId = path.join("domainName",userName);
-  //console.log(loginId);
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.write(userName);
-  res.end();
-});
-
-app.post('/sendEmail', function (req, res) {
-  let emailTo = req.body.emailTo;
-  let emailFrom = req.body.emailFrom;
-  //let emailFrom = 'codeweek@baml-test.com';
-  let subject = req.body.subject;
-  let body = req.body.body;
-
-  //console.log(emailTo);
-  //console.log(emailFrom);
-  //console.log(subject);
-  //console.log(body);
-
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'test01@test.com',
-      pass: 'test'
-    }
+  app.get('/getArchiveEmail', function (req, res) {
+    let id = req.query.id;
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    var database = new Database();
+    const query = 'select email_subject, email_to, email_message from email_audit where id=?';
+    var args = [id];
+    database.query(query, args).then( rows => {
+      res.write(JSON.stringify(rows));
+    }).then(() => {
+      database.close().then(() => {
+        res.end();
+      });
+    });
+    //res.write(JSON.stringify(htmlData));
+    //res.end();
   });
 
-  const mailOptions = {
-    from: emailFrom, // sender address
-    to: emailTo, // list of receivers
-    subject: subject, // Subject line
-    html: body// plain text body
-  };
-
-  transporter.sendMail(mailOptions, function (err, info) {
-     if(err)
-       console.log(err)
-     else
-       console.log(info);
-  });
-
-  var database = new Database();
-  const query = 'insert into sys.email_audit (email_message, email_subject, email_from, email_to, cre_time) values(?, ?, ?, ?, now())';
-  var args = [body, subject, emailFrom, emailTo];
-  database.query(query, args).then(() => {
-    console.log('record inserted!');
-    res.write('Mail sent!');
+  app.get('/getUserName', function (req, res) {
+    let userName = process.env['USERPROFILE'].split(path.sep)[2];
+    //let loginId = path.join("domainName",userName);
+    //console.log(loginId);
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.write(userName);
     res.end();
   });
-});
 
-app.listen(3000, function () {
-  console.log('App listening on port 3000!')
-});
+  app.post('/sendEmail', function (req, res) {
+    let emailTo = req.body.emailTo;
+    let emailFrom = req.body.emailFrom;
+    //let emailFrom = 'codeweek@baml-test.com';
+    let subject = req.body.subject;
+    let body = req.body.body;
+
+    //console.log(emailTo);
+    //console.log(emailFrom);
+    //console.log(subject);
+    //console.log(body);
+
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'test01@test.com',
+        pass: 'test'
+      }
+    });
+
+    const mailOptions = {
+      from: emailFrom, // sender address
+      to: emailTo, // list of receivers
+      subject: subject, // Subject line
+      html: body// plain text body
+    };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+       if(err)
+         console.log(err)
+       else
+         console.log(info);
+    });
+
+    var database = new Database();
+    const query = 'insert into sys.email_audit (email_message, email_subject, email_from, email_to, cre_time) values(?, ?, ?, ?, now())';
+    var args = [body, subject, emailFrom, emailTo];
+    database.query(query, args).then(() => {
+      console.log('record inserted!');
+      res.write('Mail sent!');
+      res.end();
+    });
+  });
+
+  app.listen(3000, function () {
+    console.log('App listening on port 3000!')
+  });

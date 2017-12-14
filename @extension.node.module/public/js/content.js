@@ -40,6 +40,36 @@ var table;
 
 })();
 
+function showArchiveMailDetails(id) {
+  $.ajax({
+    url: "/getArchiveEmail?id="+id,
+    success: function(result){
+      //console.log(result);
+      let row = JSON.parse(result)[0];
+        if(undefined != row && null != row) {
+          $('#archiveEmailTo').val(row.email_to);
+          $('#archiveEmailSub').val(row.email_subject);
+          $('#archiveEmailBody').html(row.email_message);
+
+          $('#archiveMailbox').dialog({
+            title: "Archived Mail",
+            show: { effect: "fold", duration: 800 },
+            hide: { effect: "fold", duration: 800 },
+            modal: true,
+            width: 750,
+            height: 700,
+            dialogClass: 'dialogHeader',
+            create: function(event, ui) {
+              var widget = $(this).dialog("widget");
+              $(".ui-dialog-titlebar-close span", widget)
+              .removeClass("ui-icon-closethick").addClass("dialog-close-icon");
+            }
+          });
+        }
+      }
+  });
+}
+
 function getArchiveEmails() {
   var archiveData = [];
 
@@ -58,12 +88,12 @@ function getArchiveEmails() {
           && null != array[i]
           && '' != array[i])
           archiveData.push([
-            array[i].id,
+            `<a href="javascript:;" onclick="showArchiveMailDetails('${array[i].id}')">${array[i].id}</a>`,
             array[i].email_subject,
             array[i].email_from,
-            array[i].email_to,
+            //array[i].email_to,
             formatDate(new Date(array[i].cre_time)),
-            array[i].email_message
+            //array[i].email_message
           ]);
       }
       table = $('#archiveTable').DataTable({
@@ -97,6 +127,21 @@ function sendEmail() {
     console.log(status);
     $('#mailbox').dialog("close");
   });
+}
+
+function forwardEmail() {
+
+  $('#archiveMailbox').dialog("close");
+
+  //let email_to = $('#archiveEmailTo').val();
+  let email_subject = $('#archiveEmailSub').val();
+  let email_message = $('#archiveEmailBody').html();
+
+  $('#emailSub').val('FW:'+email_subject);
+  $('.note-editable').html(email_message);
+
+  openMailBox();
+
 }
 
 function addToEmailBody(element) {
