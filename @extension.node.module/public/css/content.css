@@ -17,7 +17,7 @@ body {
 .search {
   position: absolute;
   top: 15px;
-  left: 180px;
+  left: 400px;
   overflow: hidden;
   display: block;
   z-index: 10;
@@ -40,7 +40,7 @@ input[type=search] {
 }
 
 input[type=search]:focus {
-    width: 600px;
+    width: 620px;
 }
 
 main {
@@ -61,4 +61,22 @@ main {
     background: #007bff;
     background-size: 22px 22px;
     background-repeat: no-repeat;
+}
+
+/* Create two equal columns that floats next to each other */
+.chartColumn {
+    float: left;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    width: 50%;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.chartRow:after {
+    content: "";
+    display: table;
+    clear: both;
 }

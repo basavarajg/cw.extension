@@ -27,17 +27,30 @@ var table;
         data: tableData
       });
       $('#archiveTable').hide();
+      $('#charts').hide();
+      $('#successMsg').hide();
+      $('#errorMsg').hide();
     }
   });
 
   //ajax call to get windows logged in user name
-  /*$.ajax({
+  $.ajax({
     url: "/getUserName",
     success: function(result) {
-      $("#username").html('Hello, ' + result.toUpperCase());
-    }
-  });*/
+      $('#username').val(result.name);
+      $('#userEmail').val(result.email);
 
+      $('#username').html(
+        `<h6>
+        <img src="img/ic_account_box_white.png" height="25" width="25" vspace="5"></img>
+        <strong>${result.name}</strong>
+        <p style="font-size: 12px">
+          ${result.email}
+        </p>
+        </h6>`);
+      $('#username').css('color', '#fff').css('clear','both').css('text-align', 'center');
+    }
+  });
 })();
 
 function showArchiveMailDetails(id) {
@@ -74,7 +87,7 @@ function getArchiveEmails() {
   var archiveData = [];
 
   table.destroy();
-
+  $('#charts').hide();
   $('#dataTable').hide();
   $('#archiveTable').show();
 
@@ -113,19 +126,31 @@ function playAudio(element) {
 }
 
 function sendEmail() {
+  let emailFrom = $('#userEmail').val();
   let emailTo = $('#emailTo').val();
   let subject = $('#emailSub').val();
   let message = $('.note-editable').html();
   $.post("/sendEmail",
   {
     emailTo: emailTo,
-    emailFrom: 'codeweek@baml-test.com',
+    emailFrom: emailFrom,
     subject: subject,
     body: message
   },
   function(data, status) {
-    console.log(status);
-    $('#mailbox').dialog("close");
+    if('success' == status) {
+      $('#emailTo').val('');
+      $('#emailSub').val('');
+      $('.note-editable').html('');
+      $('#mailbox').dialog("close");
+      $('#successMsg').delay(500).fadeIn('normal', function() {
+         $(this).delay(500).fadeOut();
+      });
+    } else {
+      $('#errorMsg').delay(500).fadeIn('normal', function() {
+         $(this).delay(500).fadeOut();
+      });
+    }
   });
 }
 
@@ -151,7 +176,10 @@ function addToEmailBody(element) {
   let  body = $('.note-editable').html();
   body = body.concat('<br>');
   body = body.concat(content);
-   $('.note-editable').html(body);
+  $('.note-editable').html(body);
+  $('#successMsg').delay(100).fadeIn('normal', function() {
+     $(this).delay(100).fadeOut();
+  });
 }
 
 function openMailBox() {
@@ -187,8 +215,16 @@ function deleteId(element, id) {
           id: id
         },
         function(data, status) {
-          if('success' == status)
+          if('success' == status) {
             (element).closest('tr').remove();
+            $('#successMsg').delay(500).fadeIn('normal', function() {
+               $(this).delay(500).fadeOut();
+            });
+          } else {
+            $('#errorMsg').delay(500).fadeIn('normal', function() {
+               $(this).delay(500).fadeOut();
+            });
+          }
         });
         $(this).dialog("close");
       },
@@ -207,6 +243,69 @@ function deleteId(element, id) {
 }
 
 function formatDate(date) {
-  var utc = date.toUTCString() // 'ddd, DD MMM YYYY HH:mm:ss GMT'
-  return utc.slice(8, 12) + utc.slice(5, 8) + utc.slice(12, 22)
+  var utc = date.toString(); // 'ddd, DD MMM YYYY HH:mm:ss GMT'
+  return utc.slice(8, 11) + utc.slice(4, 8) + utc.slice(11, 21)
+}
+
+function showCharts() {
+  table.destroy();
+  $('#archiveTable').hide();
+  $('#dataTable').hide();
+  $('#charts').show();
+  plotChart("chart1");
+  plotChart("chart2");
+  plotChart("chart3");
+  plotChart("chart4");
+
+
+}
+
+function plotChart(id) {
+
+  let chartName = 'chart1' == id ? 'Content per User'
+  : 'chart2' == id ? 'Emails per User'
+  : 'chart3' == id ? 'Content per Day'
+  : 'Emails per Day';
+
+  let seriesName = 'chart1' == id ? 'Content'
+  : 'chart2' == id ? 'Email'
+  : 'chart3' == id ? 'Content'
+  : 'Email';
+
+  $.ajax({
+    url: "/getChartData?type="+id,
+    success: function(result) {
+      let array = JSON.parse(result);
+
+      let y = [array.length];
+      let x = [array.length];
+
+      for(let i=0; i< array.length; i++) {
+        if(undefined != array[i] && null != array[i]) {
+          y[i] = array[i].y;
+          x[i] = array[i].x;
+        }
+      }
+      let myChart = Highcharts.chart(id, {
+          chart: {
+              type: 'column'
+          },
+          title: {
+            text: chartName
+          },
+          xAxis: {
+              categories: x
+          },
+          yAxis: {
+              title: {
+                  text: 'Count'
+              }
+          },
+          series: [{
+              name: seriesName,
+              data: y
+          }]
+      });
+    }
+  });
 }

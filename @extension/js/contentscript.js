@@ -12,6 +12,9 @@ var div = document.createElement('div');
 div.appendChild(elements);
 //alert(div.innerHTML);
 
+var fName = document.getElementsByName("DCSext.FirstName");
+var lName = document.getElementsByName("DCSext.LastName");
+var emailElement = document.getElementsByName("DCSext.Email");
 /*chrome.storage.local.get(['arr'], function(obj) {
   var array = obj.arr?obj.arr:[];
   array.push(div.innerHTML);
@@ -20,7 +23,13 @@ div.appendChild(elements);
   });
 });*/
 if(div.innerHTML) {
-  chrome.runtime.sendMessage({html: div.innerHTML}, function(response) {
+  chrome.runtime.sendMessage(
+    {
+      html: div.innerHTML,
+      name: fName[0].content + ' ' + lName[0].content,
+      email: emailElement[0].content
+    },
+    function(response) {
     console.log(response.status);
   });
 }

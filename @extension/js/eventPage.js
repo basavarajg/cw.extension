@@ -20,7 +20,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if(request.html) {
     $.post("http://localhost:3000/content",
     {
-      html: request.html
+      html: request.html,
+      name: request.name,
+      email: request.email
     },
     function(data, status) {
       chrome.tabs.query({'url': data}, function(tabs) {

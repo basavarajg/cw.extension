@@ -10,6 +10,9 @@ var express = require('express')
 var app = express();
 //var htmlData = [];
 
+var name = '';
+var email = '';
+
 //support parsing of application/json type post data
 app.use(bodyParser.json());
 
@@ -32,6 +35,14 @@ app.route('/content')
   .post(function (req, res) {
     //console.log(req.body.html);
     let bodyHtml = req.body.html;
+    if('' == name)
+      name = req.body.name;
+    if('' == email)
+      email = req.body.email;
+
+    console.log('Name: ' + name);
+    console.log('Email: ' + email);
+
     if(undefined != bodyHtml
       && null != bodyHtml
       && '' != bodyHtml) {
@@ -45,7 +56,7 @@ app.route('/content')
             console.log('Content already exists');
           } else {
             const query = 'insert into sys.select_content (content, user, cre_time) values(?,?,now());';
-            var args = [bodyHtml, 'zktewfm'];
+            var args = [bodyHtml, name];
             database.query(query, args).then(() => {
               console.log('record inserted!');
             });
@@ -140,12 +151,13 @@ app.route('/content')
   });
 
   app.get('/getUserName', function (req, res) {
-    let userName = process.env['USERPROFILE'].split(path.sep)[2];
-    //let loginId = path.join("domainName",userName);
-    //console.log(loginId);
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write(userName);
-    res.end();
+    //res.writeHead(200, {'Content-Type': 'application/json'});
+    //res.write(userName);
+    res.json({
+      "name": name,
+      "email": email
+    });
+    //res.end();
   });
 
   app.post('/sendEmail', function (req, res) {
@@ -163,10 +175,10 @@ app.route('/content')
     res.writeHead(200, {'Content-Type': 'text/plain'});
 
     var transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: '<your smpt>',
       auth: {
-        user: 'test01@test.com',
-        pass: 'test'
+        user: '<your email account>',
+        pass: '<your password>'
       }
     });
 
@@ -185,8 +197,8 @@ app.route('/content')
     });
 
     var database = new Database();
-    const query = 'insert into sys.email_audit (email_message, email_subject, email_from, email_to, cre_time) values(?, ?, ?, ?, now())';
-    var args = [body, subject, emailFrom, emailTo];
+    const query = 'insert into sys.email_audit (email_message, email_subject, email_from, email_to, cre_time, user) values(?, ?, ?, ?, now(), ?)';
+    var args = [body, subject, emailFrom, emailTo, name];
     database.query(query, args).then(() => {
       console.log('record inserted!');
       res.write('Mail sent!');
@@ -194,6 +206,81 @@ app.route('/content')
     });
   });
 
+  app.get('/getChartData', function (req, res) {
+    let type = req.query.type;
+
+    let query = '';
+    if('chart1' == type) {
+      query = `select count(user) as y, user as x from select_content group by user;`;
+    } else if('chart2' == type) {
+      query = `select count(user) as y, user as x from email_audit group by user;`;
+    } else if('chart3' == type) {
+      query = `select COALESCE((SELECT COUNT(content_id) FROM select_content WHERE DATE_FORMAT(cre_time, '%Y-%m-%d') = a.Date), 0) as y
+        , DATE_FORMAT(a.Date, "%D %b") AS x
+        from (
+          select curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as Date
+          from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a
+          cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b
+          cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
+        ) a
+        where a.Date between DATE_SUB(CURDATE(), INTERVAL 7 DAY) and CURDATE()
+        ORDER BY a.Date`;
+    } else if('chart4' == type) {
+      query = `select COALESCE((SELECT COUNT(id) FROM email_audit WHERE DATE_FORMAT(cre_time, '%Y-%m-%d') = a.Date), 0) as y
+        , DATE_FORMAT(a.Date, "%D %b") AS x
+        from (
+          select curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as Date
+          from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a
+          cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b
+          cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
+        ) a
+        where a.Date between DATE_SUB(CURDATE(), INTERVAL 7 DAY) and CURDATE()
+        ORDER BY a.Date`;
+    }
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    var database = new Database();
+    var args = [];
+    database.query(query, args).then( rows => {
+      res.write(JSON.stringify(rows));
+    }).then(() => {
+      database.close().then(() => {
+        res.end();
+      });
+    });
+    //res.write(JSON.stringify(htmlData));
+    //res.end();
+  });
+
   app.listen(3000, function () {
     console.log('App listening on port 3000!')
   });
+//select count(user), user from select_content group by user;
+//select count(user), user from email_audit group by user;
+/*
+select DATE_FORMAT(a.Date, "%D %b") AS date,
+       COALESCE((SELECT COUNT(content_id)
+                 FROM select_content
+                 WHERE DATE_FORMAT(cre_time, '%Y-%m-%d') = a.Date), 0) as COUNT
+from (
+    select curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as Date
+    from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a
+    cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b
+    cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
+) a
+where a.Date between DATE_SUB(CURDATE(), INTERVAL 7 DAY) and CURDATE()
+ORDER BY a.Date
+
+
+select DATE_FORMAT(a.Date, "%D %b") AS date,
+       COALESCE((SELECT COUNT(id)
+                 FROM email_audit
+                 WHERE DATE_FORMAT(cre_time, '%Y-%m-%d') = a.Date), 0) as COUNT
+from (
+    select curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as Date
+    from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a
+    cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b
+    cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
+) a
+where a.Date between DATE_SUB(CURDATE(), INTERVAL 7 DAY) and CURDATE()
+ORDER BY a.Date
+*/
